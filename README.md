@@ -109,3 +109,40 @@ NDLOCR-Liteは「レイアウト認識」、「文字列認識」、「読み順
 レイアウト認識及び文字列認識の機械学習モデルは、いずれもpytorchをフレームワークとした学習を行った後にONNX形式に変換して利用しています。詳しくは[学習及びモデル変換手順](/train/README.md)をご覧ください。
 
 
+
+## GUI追加機能（今回の修正）
+
+- レシート主要項目抽出を追加
+  - `店舗名 / 日時 / 合計` を抽出して表示
+  - 合計は座標ベースで `合計` ラベル右側の値を優先
+  - `値引き合計 / 割引合計` などは除外
+  - 合計が見つからない場合は無理に埋めず空欄
+
+- 抽出項目の位置可視化を追加
+  - 抽出項目クリックで該当箇所をハイライト
+  - クリック時の表示は対象周辺の拡大表示
+
+- 抽出項目の編集・保存を追加
+  - GUI上で `店舗名 / 日時 / 合計` を編集可能
+  - 編集内容を画像ごとに保存可能（JSONへ反映）
+
+- 既存認識結果の再表示を追加
+  - 出力先フォルダに対応結果がある場合、OCR再実行前でも表示
+  - 対象: `viz_*.jpg`, `*.json`（または `*_receipt_fields.json`）, `*.txt`
+
+- 画面レイアウト改善
+  - 左: 操作・抽出表示 / 右: 画像表示
+  - 右側画像は拡大・縮小・リセット操作に対応
+
+## GUI Update Notes (Latest Changes)
+
+- Added receipt key field extraction: store name, datetime, total.
+- Total is extracted by coordinate-aware logic (right side of total label).
+- Discount-related totals (e.g., discount total) are excluded from total.
+- If total cannot be found confidently, it stays blank (no forced value).
+- Added clickable field highlight and focused zoom preview.
+- Added editable fields in GUI (store name / datetime / total).
+- Added per-image save for edited receipt fields (JSON update).
+- If matching output files already exist in output folder, preview loads them without rerun.
+- Two-pane layout: left for controls/results, right for image preview.
+- Right image panel supports zoom in/out/reset controls.
